@@ -25,7 +25,7 @@ interface Project {
 })
 export class AppComponent {
 
-  project: Project = {images:[]}
+  project: Project = { images: [] }
   view: "camera" | "photo" = "camera";
 
   interval: any;
@@ -34,29 +34,29 @@ export class AppComponent {
   count = -1;
   inProgress?: boolean;
   public trigger: Subject<void> = new Subject();
+  public rotate: Subject<boolean> = new Subject();
   title = 'photobooth';
 
 
   public handleImage(webcamImage: WebcamImage): void {
-    console.log(webcamImage);
     this.view = "photo";
     this.project.images.push(webcamImage.imageAsDataUrl);
   }
 
-  public triggerNewPhoto(){
+  public triggerNewPhoto() {
     this.inProgress = true;
-    this.count = 1;
+    this.count = 10;
     this.triggerCountdown();
   }
 
-  private triggerCountdown(){
+  private triggerCountdown() {
     this.interval = setInterval(() => {
-      if(this.count === -1){
+      if (this.count === -1) {
         clearInterval(this.interval);
         return;
       }
 
-      if(this.count === 0){
+      if (this.count === 0) {
         this.takeSnapshop();
       }
 
@@ -64,18 +64,18 @@ export class AppComponent {
     }, 1000)
   }
 
-  private takeSnapshop(){
+  private takeSnapshop() {
     this.trigger.next();
   }
 
-  public reset(){
+  public reset() {
     this.inProgress = false;
     this.count = -1;
     clearInterval(this.interval);
   }
 
 
-  get lastPhoto(){
+  get lastPhoto() {
     return this.project.images.slice(-1)[0] || "";
   }
 }
